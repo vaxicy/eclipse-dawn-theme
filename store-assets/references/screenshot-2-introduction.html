@@ -1,0 +1,98 @@
+<!doctype html><html lang="en"><meta charset="utf-8"><style>:root{
+  --frame:#3C3D68;
+  --bar:#2D2E43;
+  --ntp:#181820;
+  --ob:#20202D;
+  --tabtx:#ECECEE;
+  --tabtx2:#ACACB9;
+  --bmtext:#ACACB9;
+  --icon:#D9D9DE;
+  --link:#AEBCD6;
+  --ntptext:#EFEFF1;
+  --halo:#D6E2F8;
+  --logoc:#A9C4E8;
+  --ui:#9AA0A6;
+  --chipbg:#33353A;
+  --chipfg:#DADCE0;
+  --shortcut:#2F3033;
+  --omnib:#8CA0CC;
+  --wbtn:#D9D9DE;
+}
+*{box-sizing:border-box}
+body{margin:0;overflow:hidden;font-family:Arial,'Helvetica Neue',sans-serif;background:var(--ntp);color:var(--ntptext)}
+.window{width:1080px;height:675px;background:var(--ntp);position:relative;overflow:hidden;display:flex;flex-direction:column}
+.row{display:flex;align-items:center;flex:0 0 auto}
+svg{display:block}
+
+/* ---- tab strip (frame colour) ---- */
+.tabstrip{height:32px;background:var(--frame);display:flex;align-items:flex-end;padding-left:33px}
+.chev{position:absolute;left:14px;top:13px}
+.tab{width:168px;height:27px;border-radius:9px 9px 0 0;margin-right:7px;padding:0 10px 0 30px;display:flex;align-items:center;
+     font-size:11.5px;color:var(--tabtx2);position:relative;outline:1px solid rgba(255,255,255,.10);outline-offset:-1px}
+.tab.on{background:var(--bar);outline:0;color:var(--tabtx)}
+.tab i{position:absolute;left:11px;top:7px;width:12px;height:12px;border-radius:3px;background:rgba(236,236,238,.18)}
+.tab.on i{background:var(--link)}
+.tab .x{margin-left:auto;opacity:.8}
+.tab .x svg{margin:0}
+.newtab{width:20px;height:20px;margin:0 0 4px 8px;display:flex;align-items:center;justify-content:center}
+.wbtns{margin-left:auto;margin-bottom:9px;margin-right:12px;display:flex;gap:24px}
+
+/* ---- toolbar ---- */
+.toolbar{height:32px;background:var(--bar);display:flex;align-items:center;gap:16px;padding:0 14px}
+.nav{display:flex;gap:15px;align-items:center}
+.omni{flex:1;height:27px;border:2px solid var(--omnib);border-radius:14px;background:var(--ob);display:flex;align-items:center;
+      padding:0 4px 0 11px;gap:9px;font-size:12.5px;color:var(--ui)}
+.omni .ph{flex:1;white-space:nowrap;overflow:hidden}
+.chip{height:20px;border-radius:10px;background:var(--chipbg);display:flex;align-items:center;gap:4px;padding:0 8px;font-size:11px;color:var(--chipfg)}
+.tools{display:flex;gap:17px;align-items:center}
+
+/* ---- bookmark bar ---- */
+.bookmarks{height:32px;background:var(--bar);display:flex;align-items:center;gap:19px;padding:0 14px;font-size:11.5px;color:var(--bmtext)}
+.bookmarks .sep{width:1px;height:14px;background:rgba(236,236,238,.14)}
+.bm{display:flex;align-items:center;gap:6px}
+
+/* ---- new tab page ---- */
+.ntp{flex:1;position:relative;background:var(--ntp)}
+.gtop{position:absolute;top:13px;right:12px;display:flex;align-items:center;gap:16px;font-size:12.5px;color:var(--ui)}
+.gtop .av{border-radius:50%;overflow:hidden}
+.glogo{position:absolute;top:86.5px;left:0;right:0;text-align:center;font-family:'Google Sans','Product Sans',Arial,sans-serif;
+       font-size:66px;font-weight:500;letter-spacing:-2.8px;color:var(--logoc);line-height:1}
+.nsearch{position:absolute;top:187px;left:50%;margin-left:-264px;width:529px;height:44px;border-radius:22px;background:#303134;
+         border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:13px;padding:0 8px 0 20px}
+.nsearch .ph{flex:1;font-size:15px;color:var(--ui);white-space:nowrap;overflow:hidden}
+.nsearch .chip{height:28px;border-radius:14px;font-size:12px;padding:0 11px;gap:6px}
+.shortcuts{position:absolute;top:251px;left:0;right:0;display:flex;justify-content:center;gap:8px}
+.shortcut{width:72px;text-align:center;font-size:12px;color:var(--ui)}
+.shortcut .circle{width:33px;height:33px;border-radius:50%;background:var(--shortcut);margin:0 auto 14px;display:flex;align-items:center;justify-content:center}
+.shortcut .lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.customize{position:absolute;right:10px;bottom:10px;height:26px;border-radius:13px;background:#202124;color:#A8C7FA;
+           display:flex;align-items:center;gap:6px;padding:0 12px;font-size:11.5px}
+
+/* ---- promo: 440x280 brand tile ---- */
+.tile{width:440px;height:280px;background:var(--frame);position:relative;overflow:hidden;text-align:center;color:var(--ntptext)}
+.tile img{width:78px;height:78px;display:block;margin:26px auto 0}
+.tile h1{font-family:Georgia,serif;font-weight:normal;font-size:37px;margin:14px 0 0;color:var(--ntptext)}
+.tile .kicker{font-size:13px;letter-spacing:5px;margin-top:9px;color:var(--link)}
+.tile p{font-size:14px;margin:19px 0 0;color:#C9C9D6}
+.tile:after{content:'';position:absolute;left:0;right:0;bottom:0;height:14px;background:var(--link)}
+
+/* ---- promo: 1400x560 marquee ---- */
+.marquee{width:1400px;height:560px;background:var(--ntp);position:relative;overflow:hidden;text-align:center;
+         border-top:8px solid var(--link)}
+.marquee h1{font-family:Georgia,serif;font-weight:normal;font-size:47px;margin:26px 0 0;color:var(--ntptext)}
+.marquee p{font-size:17px;margin:9px 0 0;color:var(--ui)}
+.marquee .frame{position:absolute;top:139px;left:300px;width:800px;height:370px;overflow:hidden;border:2px solid var(--frame);
+                border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+.marquee .frame .window{transform:scale(.740741);transform-origin:top left}
+
+/* ---- screenshot 2: palette card ---- */
+.intro{width:1280px;height:800px;background:var(--ntp);padding:66px 74px}
+.intro .kicker{font-size:12px;letter-spacing:4px;color:var(--ui)}
+.intro h1{font-family:Georgia,serif;font-weight:normal;font-size:54px;margin:16px 0 0;color:var(--ntptext)}
+.intro .lead{font-size:21px;margin:14px 0 0;color:#C9C9D6}
+.cards{display:grid;grid-template-columns:1fr 1fr;gap:22px;margin-top:38px}
+.card{height:196px;border-radius:18px;padding:30px;display:flex;flex-direction:column;justify-content:flex-end}
+.card strong{font-size:28px}
+.card span{font-size:16.5px;margin-top:10px}
+.intro .chips{font-size:16px;margin-top:32px;color:var(--ui)}
+</style><body><div class="intro"><div class="kicker">A QUIET, DARK PALETTE</div><h1>Eclipse Dawn Theme</h1><p class="lead">Deep indigo, eclipse navy and one calm periwinkle accent.</p><div class="cards"><div class="card" style="background:#3C3D68;color:#EFEFF1;border:1px solid rgba(236,236,238,.14)"><strong>Deep Indigo</strong><span>#3C3D68 · Window frame & tab strip</span></div><div class="card" style="background:#2D2E43;color:#EFEFF1;border:1px solid rgba(236,236,238,.14)"><strong>Charcoal Blue</strong><span>#2D2E43 · Toolbar, bookmarks & active tab</span></div><div class="card" style="background:#181820;color:#EFEFF1;border:1px solid rgba(236,236,238,.14)"><strong>Eclipse Navy</strong><span>#181820 · New tab background</span></div><div class="card" style="background:#AEBCD6;color:#181820;border:1px solid rgba(236,236,238,.14)"><strong>Periwinkle</strong><span>#AEBCD6 · Accent, links & active tab mark</span></div></div><p class="chips">Solid colors · Minimal design · Dark interface · Tuned for contrast</p></div></body></html>
