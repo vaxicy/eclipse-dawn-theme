@@ -4,7 +4,7 @@
   "name": "Eclipse Dawn Theme",
   "description": "Dark and serene, ideal for focused work.",
   "icons": {
-    "128": "logo/logo128.png"
+    "128": "logo/logo.png"
   },
   "theme": {
     "colors": {

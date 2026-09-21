@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo/logo128.png" width="128" alt="Eclipse Dawn Theme icon">
+  <img src="logo/logo.png" width="128" alt="Eclipse Dawn Theme icon">
 </p>
 
 <h1 align="center">Eclipse Dawn Theme</h1>
@@ -32,10 +32,11 @@ Each layer is a flat, single solid color, and every text tone is tuned so labels
 
 Some parts of the browser are painted by Chrome itself, not by the theme manifest. The store screenshots follow what Chrome renders on a dark new-tab page:
 
-- **Google mark on the new-tab page:** with `ntp_logo_alternate` enabled, Chrome paints it in a single light blue tone computed from the new-tab background rather than the four-color brand logo.
-- **Shortcut tiles:** the round new-tab shortcut buttons are drawn by the page as a dark grey surface.
+- **Google mark on the new-tab page:** with `ntp_logo_alternate` enabled, Chrome paints it in a single light neutral tone computed from the new-tab background rather than the four-color brand logo.
+- **Search box on the new-tab page:** Chrome renders it as a light pill with dark text, sitting on the dark page.
+- **Shortcut tiles:** the round new-tab shortcut buttons keep their own light tiles (YouTube, Chrome Web Store), while the add-shortcut tile is a dark circle.
 - **Window buttons:** Chrome keeps the minimize / maximize / close glyphs light against the indigo frame.
-- **Address bar:** the omnibox uses a near-black field so it stays legible inside the charcoal toolbar.
+- **Address bar:** the omnibox uses a near-black field with a light outline so it stays legible inside the charcoal toolbar.
 
 ## Features
 
@@ -69,7 +70,7 @@ Search for **Eclipse Dawn Theme** in the Chrome Web Store and install it.
 | File | Description |
 |------|-------------|
 | `manifest.json` | Chrome theme manifest (MV3) with inline `theme` config |
-| `logo/logo128.png` | Chrome Web Store icon (128x128) |
+| `logo/logo.png` | Chrome Web Store icon (128x128) |
 | `store-assets/screenshots/en/` | Store listing screenshots (1280x800) |
 | `store-assets/promo/` | Promo tiles (440x280 and 1400x560) |
 | `store-assets/store-description.txt` | Store listing detailed description (English) |

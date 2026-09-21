@@ -10,12 +10,11 @@
   --link:#AEBCD6;
   --ntptext:#EFEFF1;
   --halo:#D6E2F8;
-  --logoc:#A9C4E8;
+  --logoc:#E8EAED;
   --ui:#9AA0A6;
-  --chipbg:#33353A;
-  --chipfg:#DADCE0;
-  --shortcut:#2F3033;
-  --omnib:#8CA0CC;
+  --shortcut:#FFFFFF;
+  --shortcutadd:#3C4043;
+  --omnib:#9AA0A6;
   --wbtn:#D9D9DE;
 }
 *{box-sizing:border-box}
@@ -27,12 +26,12 @@ svg{display:block}
 /* ---- tab strip (frame colour) ---- */
 .tabstrip{height:32px;background:var(--frame);display:flex;align-items:flex-end;padding-left:33px}
 .chev{position:absolute;left:14px;top:13px}
-.tab{width:168px;height:27px;border-radius:9px 9px 0 0;margin-right:7px;padding:0 10px 0 30px;display:flex;align-items:center;
+.tab{width:176px;height:27px;border-radius:9px 9px 0 0;margin-right:7px;padding:0 10px 0 30px;display:flex;align-items:center;
      font-size:11.5px;color:var(--tabtx2);position:relative;outline:1px solid rgba(255,255,255,.10);outline-offset:-1px}
 .tab.on{background:var(--bar);outline:0;color:var(--tabtx)}
-.tab i{position:absolute;left:11px;top:7px;width:12px;height:12px;border-radius:3px;background:rgba(236,236,238,.18)}
-.tab.on i{background:var(--link)}
-.tab .x{margin-left:auto;opacity:.8}
+.tab i{position:absolute;left:11px;top:8px;width:12px;height:12px;line-height:0}
+.tab .t{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tab .x{flex:0 0 auto;margin-left:6px;opacity:.8}
 .tab .x svg{margin:0}
 .newtab{width:20px;height:20px;margin:0 0 4px 8px;display:flex;align-items:center;justify-content:center}
 .wbtns{margin-left:auto;margin-bottom:9px;margin-right:12px;display:flex;gap:24px}
@@ -41,10 +40,9 @@ svg{display:block}
 .toolbar{height:32px;background:var(--bar);display:flex;align-items:center;gap:16px;padding:0 14px}
 .nav{display:flex;gap:15px;align-items:center}
 .omni{flex:1;height:27px;border:2px solid var(--omnib);border-radius:14px;background:var(--ob);display:flex;align-items:center;
-      padding:0 4px 0 11px;gap:9px;font-size:12.5px;color:var(--ui)}
+      padding:0 6px 0 11px;gap:9px;font-size:12.5px;color:var(--ui)}
 .omni .ph{flex:1;white-space:nowrap;overflow:hidden}
-.chip{height:20px;border-radius:10px;background:var(--chipbg);display:flex;align-items:center;gap:4px;padding:0 8px;font-size:11px;color:var(--chipfg)}
-.tools{display:flex;gap:17px;align-items:center}
+.tools{display:flex;gap:16px;align-items:center}
 
 /* ---- bookmark bar ---- */
 .bookmarks{height:32px;background:var(--bar);display:flex;align-items:center;gap:19px;padding:0 14px;font-size:11.5px;color:var(--bmtext)}
@@ -54,16 +52,15 @@ svg{display:block}
 /* ---- new tab page ---- */
 .ntp{flex:1;position:relative;background:var(--ntp)}
 .gtop{position:absolute;top:13px;right:12px;display:flex;align-items:center;gap:16px;font-size:12.5px;color:var(--ui)}
-.gtop .av{border-radius:50%;overflow:hidden}
 .glogo{position:absolute;top:86.5px;left:0;right:0;text-align:center;font-family:'Google Sans','Product Sans',Arial,sans-serif;
        font-size:66px;font-weight:500;letter-spacing:-2.8px;color:var(--logoc);line-height:1}
-.nsearch{position:absolute;top:187px;left:50%;margin-left:-264px;width:529px;height:44px;border-radius:22px;background:#303134;
-         border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:13px;padding:0 8px 0 20px}
-.nsearch .ph{flex:1;font-size:15px;color:var(--ui);white-space:nowrap;overflow:hidden}
-.nsearch .chip{height:28px;border-radius:14px;font-size:12px;padding:0 11px;gap:6px}
+.nsearch{position:absolute;top:187px;left:50%;margin-left:-264px;width:529px;height:44px;border-radius:22px;background:var(--shortcut);
+         box-shadow:0 1px 6px rgba(0,0,0,.34);display:flex;align-items:center;gap:13px;padding:0 14px 0 20px}
+.nsearch .ph{flex:1;font-size:15px;color:#3C4043;white-space:nowrap;overflow:hidden}
 .shortcuts{position:absolute;top:251px;left:0;right:0;display:flex;justify-content:center;gap:8px}
-.shortcut{width:72px;text-align:center;font-size:12px;color:var(--ui)}
+.shortcut{width:78px;text-align:center;font-size:12px;color:var(--ui)}
 .shortcut .circle{width:33px;height:33px;border-radius:50%;background:var(--shortcut);margin:0 auto 14px;display:flex;align-items:center;justify-content:center}
+.shortcut .circle.add{background:var(--shortcutadd)}
 .shortcut .lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .customize{position:absolute;right:10px;bottom:10px;height:26px;border-radius:13px;background:#202124;color:#A8C7FA;
            display:flex;align-items:center;gap:6px;padding:0 12px;font-size:11.5px}

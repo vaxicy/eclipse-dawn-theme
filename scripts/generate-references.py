@@ -6,8 +6,8 @@ scaled once per output:
   promo wide    scaled preview, window trimmed so the whole frame fits
 
 Theme-controlled colours come from manifest.json (single source of truth).
-Chrome-owned UI tones are literals sampled / inferred for this dark palette and
-listed in store-assets/ASSET-NOTES.md.
+Chrome-owned UI tones are calibrated against a real installed-Chrome screenshot
+of this theme and listed in store-assets/ASSET-NOTES.md.
 """
 from pathlib import Path
 import base64
@@ -20,7 +20,6 @@ OUT = ROOT / 'store-assets' / 'references'
 OUT.mkdir(parents=True, exist_ok=True)
 C = json.loads((ROOT / 'manifest.json').read_text('utf-8-sig'))['theme']['colors']
 C['halo'] = [214, 226, 248]   # brand accent: corona highlight used by the icon/store art
-C['card'] = [34, 35, 52]      # background_tab tone for the intro card border
 
 
 def color(k):
@@ -29,15 +28,16 @@ def color(k):
 
 # ---------------------------------------------------------------------------
 # UI tones NOT controlled by the theme (Chrome paints them itself).
-# Dark-surface values; see store-assets/ASSET-NOTES.md.
+# Calibrated against a real installed-Chrome screenshot of this theme.
 # ---------------------------------------------------------------------------
-LOGO_TINT = '#A9C4E8'        # ntp_logo_alternate tint Chrome computes on this NTP
-SEARCH_TEXT = '#9AA0A6'      # placeholder + shortcut labels on dark
-OMNI_BORDER = '#8CA0CC'      # focused omnibox outline on the dark toolbar
-CHIP_BG = '#33353A'          # "AI Mode" chip inside the search fields
-CHIP_FG = '#DADCE0'
-NSEARCH_BG = '#303134'       # new-tab search pill (Google dark surface)
-SHORTCUT_BG = '#2F3033'      # new-tab shortcut circles
+LOGO_TINT = '#E8EAED'        # ntp_logo_alternate tone Chrome paints on this dark NTP
+SEARCH_TEXT = '#9AA0A6'      # shortcut labels + Gmail/Images on the dark NTP
+OMNI_BORDER = '#9AA0A6'      # omnibox outline on the dark toolbar
+NSEARCH_BG = '#FFFFFF'       # new-tab search pill: Chrome renders it light here
+NSEARCH_TEXT = '#3C4043'     # placeholder inside the light search pill
+NSEARCH_ICON = '#5F6368'     # plus / mic glyphs inside the search pill
+SHORTCUT_TILE = '#FFFFFF'    # favicon tiles (YouTube / Chrome Web Store)
+SHORTCUT_ADD = '#3C4043'     # "Add shortcut" circle
 PILL_BG = '#202124'          # Customize Chrome pill
 PILL_FG = '#A8C7FA'
 WIN_BTN = '#D9D9DE'          # window glyphs on the indigo frame
@@ -57,9 +57,8 @@ VARS = f""":root{{
   --halo:{color('halo')};
   --logoc:{LOGO_TINT};
   --ui:{SEARCH_TEXT};
-  --chipbg:{CHIP_BG};
-  --chipfg:{CHIP_FG};
-  --shortcut:{SHORTCUT_BG};
+  --shortcut:{SHORTCUT_TILE};
+  --shortcutadd:{SHORTCUT_ADD};
   --omnib:{OMNI_BORDER};
   --wbtn:{WIN_BTN};
 }}"""
@@ -74,12 +73,12 @@ svg{display:block}
 /* ---- tab strip (frame colour) ---- */
 .tabstrip{height:32px;background:var(--frame);display:flex;align-items:flex-end;padding-left:33px}
 .chev{position:absolute;left:14px;top:13px}
-.tab{width:168px;height:27px;border-radius:9px 9px 0 0;margin-right:7px;padding:0 10px 0 30px;display:flex;align-items:center;
+.tab{width:176px;height:27px;border-radius:9px 9px 0 0;margin-right:7px;padding:0 10px 0 30px;display:flex;align-items:center;
      font-size:11.5px;color:var(--tabtx2);position:relative;outline:1px solid rgba(255,255,255,.10);outline-offset:-1px}
 .tab.on{background:var(--bar);outline:0;color:var(--tabtx)}
-.tab i{position:absolute;left:11px;top:7px;width:12px;height:12px;border-radius:3px;background:rgba(236,236,238,.18)}
-.tab.on i{background:var(--link)}
-.tab .x{margin-left:auto;opacity:.8}
+.tab i{position:absolute;left:11px;top:8px;width:12px;height:12px;line-height:0}
+.tab .t{flex:1 1 auto;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tab .x{flex:0 0 auto;margin-left:6px;opacity:.8}
 .tab .x svg{margin:0}
 .newtab{width:20px;height:20px;margin:0 0 4px 8px;display:flex;align-items:center;justify-content:center}
 .wbtns{margin-left:auto;margin-bottom:9px;margin-right:12px;display:flex;gap:24px}
@@ -88,10 +87,9 @@ svg{display:block}
 .toolbar{height:32px;background:var(--bar);display:flex;align-items:center;gap:16px;padding:0 14px}
 .nav{display:flex;gap:15px;align-items:center}
 .omni{flex:1;height:27px;border:2px solid var(--omnib);border-radius:14px;background:var(--ob);display:flex;align-items:center;
-      padding:0 4px 0 11px;gap:9px;font-size:12.5px;color:var(--ui)}
+      padding:0 6px 0 11px;gap:9px;font-size:12.5px;color:var(--ui)}
 .omni .ph{flex:1;white-space:nowrap;overflow:hidden}
-.chip{height:20px;border-radius:10px;background:var(--chipbg);display:flex;align-items:center;gap:4px;padding:0 8px;font-size:11px;color:var(--chipfg)}
-.tools{display:flex;gap:17px;align-items:center}
+.tools{display:flex;gap:16px;align-items:center}
 
 /* ---- bookmark bar ---- */
 .bookmarks{height:32px;background:var(--bar);display:flex;align-items:center;gap:19px;padding:0 14px;font-size:11.5px;color:var(--bmtext)}
@@ -101,16 +99,15 @@ svg{display:block}
 /* ---- new tab page ---- */
 .ntp{flex:1;position:relative;background:var(--ntp)}
 .gtop{position:absolute;top:13px;right:12px;display:flex;align-items:center;gap:16px;font-size:12.5px;color:var(--ui)}
-.gtop .av{border-radius:50%;overflow:hidden}
 .glogo{position:absolute;top:86.5px;left:0;right:0;text-align:center;font-family:'Google Sans','Product Sans',Arial,sans-serif;
        font-size:66px;font-weight:500;letter-spacing:-2.8px;color:var(--logoc);line-height:1}
-.nsearch{position:absolute;top:187px;left:50%;margin-left:-264px;width:529px;height:44px;border-radius:22px;background:#303134;
-         border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;gap:13px;padding:0 8px 0 20px}
-.nsearch .ph{flex:1;font-size:15px;color:var(--ui);white-space:nowrap;overflow:hidden}
-.nsearch .chip{height:28px;border-radius:14px;font-size:12px;padding:0 11px;gap:6px}
+.nsearch{position:absolute;top:187px;left:50%;margin-left:-264px;width:529px;height:44px;border-radius:22px;background:var(--shortcut);
+         box-shadow:0 1px 6px rgba(0,0,0,.34);display:flex;align-items:center;gap:13px;padding:0 14px 0 20px}
+.nsearch .ph{flex:1;font-size:15px;color:#3C4043;white-space:nowrap;overflow:hidden}
 .shortcuts{position:absolute;top:251px;left:0;right:0;display:flex;justify-content:center;gap:8px}
-.shortcut{width:72px;text-align:center;font-size:12px;color:var(--ui)}
+.shortcut{width:78px;text-align:center;font-size:12px;color:var(--ui)}
 .shortcut .circle{width:33px;height:33px;border-radius:50%;background:var(--shortcut);margin:0 auto 14px;display:flex;align-items:center;justify-content:center}
+.shortcut .circle.add{background:var(--shortcutadd)}
 .shortcut .lbl{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .customize{position:absolute;right:10px;bottom:10px;height:26px;border-radius:13px;background:#202124;color:#A8C7FA;
            display:flex;align-items:center;gap:6px;padding:0 12px;font-size:11.5px}
@@ -153,10 +150,14 @@ def g_mark(size):
             f'<path fill="{G_GREEN}" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>')
 
 
-def sparkle(size, fill):
-    return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24" fill="{fill}">'
-            f'<path d="M12 2.6l1.75 4.85L18.6 9.2l-4.85 1.75L12 15.8l-1.75-4.85L5.4 9.2l4.85-1.75z"/>'
-            f'<path d="M19 14l.9 2.4 2.4.9-2.4.9-.9 2.4-.9-2.4-2.4-.9 2.4-.9z"/></svg>')
+def pinwheel(size):
+    """Four-colour circular mark (Chrome / Chrome Web Store glyph)."""
+    return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24">'
+            f'<circle cx="12" cy="12" r="11" fill="#FFFFFF"/>'
+            f'<path d="M12 1a11 11 0 0 1 9.53 5.5L12 12z" fill="{G_RED}"/>'
+            f'<path d="M21.53 6.5A11 11 0 0 1 12 23L12 12z" fill="{G_GREEN}"/>'
+            f'<path d="M12 23A11 11 0 0 1 2.47 17.5L12 12z" fill="{G_YELLOW}"/>'
+            f'<circle cx="12" cy="12" r="5" fill="{G_BLUE}"/><circle cx="12" cy="12" r="2.1" fill="#FFFFFF"/></svg>')
 
 
 def apps(size, fill):
@@ -171,17 +172,44 @@ def mic(size, fill):
             f'<path d="M12 19v3" stroke="{fill}" stroke-width="2"/></svg>')
 
 
-def lens(size, fill):
+def plus(size, fill):
     return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24">'
-            f'<rect x="3" y="6" width="18" height="13" rx="4" fill="none" stroke="{fill}" stroke-width="2"/>'
-            f'<circle cx="12" cy="12.5" r="3.2" fill="none" stroke="{fill}" stroke-width="2"/></svg>')
+            f'<path d="M12 5v14M5 12h14" stroke="{fill}" stroke-width="2.3" stroke-linecap="round"/></svg>')
 
 
-def avatar(size):
+def magnifier(size, fill):
     return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24">'
-            f'<circle cx="12" cy="12" r="12" fill="{color("ntp_link")}"/>'
-            f'<circle cx="12" cy="9.4" r="4.1" fill="{color("halo")}"/>'
-            f'<path d="M3.8 21.2c1.6-4.3 4.7-6.4 8.2-6.4s6.6 2.1 8.2 6.4z" fill="{color("halo")}"/></svg>')
+            f'<circle cx="10" cy="10" r="6.4" fill="none" stroke="{fill}" stroke-width="2.2"/>'
+            f'<path d="M15 15l5.6 5.6" stroke="{fill}" stroke-width="2.2" stroke-linecap="round"/></svg>')
+
+
+def lens(size):
+    """Google Lens glyph (Chrome renders it in brand colour on the search pill)."""
+    return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24">'
+            f'<rect x="2" y="2" width="20" height="20" rx="6" fill="#FFFFFF"/>'
+            f'<path d="M4 10a8 8 0 0 1 16 0z" fill="{G_BLUE}"/>'
+            f'<path d="M20 10a8 8 0 0 1-8 8z" fill="{G_RED}"/>'
+            f'<path d="M12 18a8 8 0 0 1-8-8z" fill="{G_YELLOW}"/>'
+            f'<circle cx="12" cy="10" r="3.1" fill="{G_GREEN}"/>'
+            f'<circle cx="12" cy="10" r="1.3" fill="#FFFFFF"/></svg>')
+
+
+def favicon(kind, size=12):
+    if kind == 'youtube':
+        return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24">'
+                f'<rect x="1" y="4.5" width="22" height="15" rx="4.5" fill="{G_RED}"/>'
+                f'<path d="M9.6 8.4l6.4 3.6-6.4 3.6z" fill="#FFFFFF"/></svg>')
+    if kind == 'themebake':
+        return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24">'
+                f'<rect x="1" y="1" width="22" height="22" rx="6" fill="#6C4BB6"/>'
+                f'<path d="M12 5.4l1.9 4.7 4.7 1.9-4.7 1.9L12 18.6l-1.9-4.7L5.4 12l4.7-1.9z" fill="#FFFFFF"/></svg>')
+    if kind == 'chrome':
+        return pinwheel(size)
+    return ''
+
+
+def avatar_less_gtop():
+    return '<div class="gtop"><span>Images</span>' + apps(13, SEARCH_TEXT) + '</div>'
 
 
 def win_buttons():
@@ -203,65 +231,65 @@ def nav_icons():
             '</div>')
 
 
-def tab(title, active=False):
+def tab(title, kind, active=False):
     cls = 'tab on' if active else 'tab'
-    return (f'<div class="{cls}"><i></i>{title}'
+    return (f'<div class="{cls}"><i>{favicon(kind, 12)}</i>'
+            f'<span class="t">{title}</span>'
             f'<span class="x"><svg width="9" height="9" viewBox="0 0 12 12">'
             f'<path d="M2 2l8 8M10 2l-8 8" stroke="{color("tab_background_text")}" stroke-width="1.6" stroke-linecap="round"/></svg></span></div>')
 
 
-def bookmarks():
+def folder(size=12):
     g = f'stroke="{color("bookmark_text")}" stroke-width="1.5" stroke-linejoin="round" fill="none"'
-    kids = ''.join(
-        f'<div class="bm"><svg width="12" height="12" viewBox="0 0 24 24">'
-        f'<path d="M3 7.5h6l2 2.5h10v8.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z" {g}/></svg>{name}</div>'
-        for name in ('Bookmarks', 'Reading', 'Focus', 'Night'))
+    return (f'<svg width="{size}" height="{size}" viewBox="0 0 24 24">'
+            f'<path d="M3 7.5h6l2 2.5h10v8.5a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 18.5z" {g}/></svg>')
+
+
+def bookmarks():
+    kids = ''.join(f'<div class="bm">{folder()}{name}</div>' for name in ('Tools', 'AI', 'UI', 'Nav', 'API', 'Dev'))
     return ('<div class="bookmarks">' + apps(13, color('bookmark_text')) + '<div class="sep"></div>' + kids + '</div>')
 
 
-def window(height=675, tabs=('New Tab', 'Reading list', 'Design inspiration', 'Eclipse Dawn')):
+def window(height=675):
+    tabs = (('(1) Jira Full Course Tutorial', 'youtube'),
+            ('ThemeBake - Create your own', 'themebake'),
+            ('New Tab', 'chrome'))
     strip = ('<div class="tabstrip">'
              f'<div class="chev"><svg width="11" height="11" viewBox="0 0 24 24">'
              f'<path d="M6 10l6 6 6-6" stroke="{color("tab_text")}" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg></div>'
-             + ''.join(tab(t, i == 0) for i, t in enumerate(tabs))
-             + f'<div class="newtab"><svg width="13" height="13" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="{color("toolbar_button_icon")}" stroke-width="2.1" stroke-linecap="round"/></svg></div>'
+             + ''.join(tab(t, k, i == 2) for i, (t, k) in enumerate(tabs))
+             + f'<div class="newtab">{plus(13, color("toolbar_button_icon"))}</div>'
              + win_buttons() + '</div>')
-    omni = ('<div class="omni">' + g_mark(14) + '<span class="ph">Search Google or type a URL</span>'
-            + f'<div class="chip">{sparkle(12, CHIP_FG)}AI Mode</div>'
-            + f'<svg width="13" height="13" viewBox="0 0 24 24"><circle cx="10" cy="10" r="6.4" fill="none" stroke="{SEARCH_TEXT}" stroke-width="2.2"/><path d="M15 15l5.6 5.6" stroke="{SEARCH_TEXT}" stroke-width="2.2" stroke-linecap="round"/></svg>'
-            + '</div>')
+    # focused, empty omnibox: search-engine mark on the left, magnifier on the right
+    omni = ('<div class="omni">' + g_mark(14) + '<span class="ph"></span>'
+            + magnifier(13, SEARCH_TEXT) + '</div>')
     dots = ''.join(f'<circle cx="12" cy="{5 + 7 * i}" r="1.7" fill="{color("toolbar_button_icon")}"/>' for i in range(3))
+    icon = color('toolbar_button_icon')
+    puzzle = (f'<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="{icon}" stroke-width="1.6" stroke-linejoin="round">'
+              f'<path d="M10 4.6a2 2 0 1 1 4 0V6h3.4v3.4H19a2 2 0 1 1 0 4h-1.6V17H14v1.4a2 2 0 1 1-4 0V17H6.6v-3.6H5a2 2 0 1 1 0-4h1.6V6H10z"/></svg>')
     kebab = ('<div class="tools">'
-             f'<svg width="15" height="15" viewBox="0 0 24 24"><path d="M12 3.6l2.5 5.6 6.1.5-4.6 4 1.4 6-5.4-3.2-5.4 3.2 1.4-6-4.6-4 6.1-.5z" fill="none" stroke="{color("toolbar_button_icon")}" stroke-width="1.6" stroke-linejoin="round"/></svg>'
-             f'<svg width="15" height="15" viewBox="0 0 24 24">{dots}</svg>'
+             f'<svg width="15" height="15" viewBox="0 0 24 24"><path d="M12 3.6l2.5 5.6 6.1.5-4.6 4 1.4 6-5.4-3.2-5.4 3.2 1.4-6-4.6-4 6.1-.5z" fill="none" stroke="{icon}" stroke-width="1.6" stroke-linejoin="round"/></svg>'
+             + puzzle
+             + f'<svg width="15" height="15" viewBox="0 0 24 24">{dots}</svg>'
              '</div>')
     toolbar = '<div class="toolbar">' + nav_icons() + omni + kebab + '</div>'
-    gtop = ('<div class="gtop"><span>Gmail</span><span>Images</span>' + apps(13, SEARCH_TEXT)
-            + f'<div class="av">{avatar(24)}</div></div>')
     glogo = '<div class="glogo">Google</div>'
-    nsearch = ('<div class="nsearch">'
-               f'<svg width="20" height="20" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" stroke="{SEARCH_TEXT}" stroke-width="2.3" stroke-linecap="round"/></svg>'
-               '<span class="ph">Search Google or type a URL</span>'
-               + mic(17, SEARCH_TEXT) + lens(18, SEARCH_TEXT)
-               + f'<div class="chip">{sparkle(13, CHIP_FG)}AI Mode</div>'
-               + '</div>')
+    nsearch = ('<div class="nsearch">' + plus(20, NSEARCH_ICON)
+               + '<span class="ph">Search Google or type a URL</span>'
+               + mic(17, NSEARCH_ICON) + lens(19) + '</div>')
     short = ('<div class="shortcuts">'
-             f'<div class="shortcut"><div class="circle"><svg width="17" height="17" viewBox="0 0 24 24">'
-             f'<rect x="1" y="5" width="22" height="14" rx="4.4" fill="none" stroke="{SEARCH_TEXT}" stroke-width="2"/>'
-             f'<path d="M10 8.8l6 3.2-6 3.2z" fill="{SEARCH_TEXT}"/></svg></div><div class="lbl">Videos</div></div>'
-             f'<div class="shortcut"><div class="circle"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="{SEARCH_TEXT}" stroke-width="2">'
-             f'<circle cx="12" cy="12" r="8"/><path d="M4 12h16M12 4c2.6 3.4 2.6 12.6 0 16M12 4c-2.6 3.4-2.6 12.6 0 16"/></svg></div><div class="lbl">Web</div></div>'
-             f'<div class="shortcut"><div class="circle"><svg width="15" height="15" viewBox="0 0 24 24">'
-             f'<path d="M12 5v14M5 12h14" stroke="{SEARCH_TEXT}" stroke-width="2.2" stroke-linecap="round"/></svg></div>'
-             f'<div class="lbl">Add shortcut</div></div></div>')
+             f'<div class="shortcut"><div class="circle">{favicon("youtube", 17)}</div><div class="lbl">YouTube</div></div>'
+             f'<div class="shortcut"><div class="circle">{pinwheel(17)}</div><div class="lbl">Chrome Web Store</div></div>'
+             f'<div class="shortcut"><div class="circle add">{plus(15, "#E8EAED")}</div><div class="lbl">Add shortcut</div></div>'
+             '</div>')
     customize = ('<div class="customize">'
                  f'<svg width="12" height="12" viewBox="0 0 24 24"><path d="M4 20l4.2-1.1L20 7.1 16.9 4 5.1 15.8z" fill="none" stroke="{PILL_FG}" stroke-width="2" stroke-linejoin="round"/></svg>'
                  'Customize Chrome</div>')
-    ntp = f'<div class="ntp">{gtop}{glogo}{nsearch}{short}{customize}</div>'
+    ntp = f'<div class="ntp">{avatar_less_gtop()}{glogo}{nsearch}{short}{customize}</div>'
     return f'<div class="window" style="height:{height}px">' + strip + toolbar + bookmarks() + ntp + '</div>'
 
 
-LOGO_URI = 'data:image/png;base64,' + base64.b64encode((ROOT / 'logo' / 'logo128.png').read_bytes()).decode()
+LOGO_URI = 'data:image/png;base64,' + base64.b64encode((ROOT / 'logo' / 'logo.png').read_bytes()).decode()
 
 tile = ('<div class="tile">' + f'<img src="{LOGO_URI}" alt="Eclipse Dawn logo">'
         + '<h1>Eclipse Dawn</h1><div class="kicker">CHROME THEME</div>'

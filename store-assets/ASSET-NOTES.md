@@ -13,21 +13,23 @@ Four English deliverables, all rendered from one headless-Chromium source (`scri
 
 The window mockup is authored in the pixel space of real maximized Chrome (1080x675) and rasterised at a matching device scale factor, so the 1280x800 store shot stays crisp instead of being upscaled. Theme-controlled surfaces (frame, toolbar, active tab, bookmark bar, omnibox, new tab page, text, links) are read from `manifest.json` at render time.
 
-Elements Chrome paints itself are literals, because this is a dark palette and Chrome decides them:
+Elements Chrome paints itself are literals, because this is a dark palette and Chrome decides them. The values below were taken from a real installed-Chrome screenshot of this theme:
 
 | Element | Value | Note |
 |---|---|---|
-| Google mark on the new tab page | `#A9C4E8` | `ntp_logo_alternate` makes Chrome paint the mark in a single tint derived from the new-tab background; this is a light blue matching the eclipse-navy page and should be confirmed against a real install |
-| New tab search pill | `#303134` | Google's dark search surface, not a theme colour |
-| Search placeholder, shortcut labels, Gmail / Images | `#9AA0A6` | Chrome's standard dark-surface tone |
-| New tab shortcut circles | `#2F3033` | Rendered by the page, not the theme |
+| Google mark on the new tab page | `#E8EAED` | `ntp_logo_alternate` makes Chrome paint the mark in a single light neutral tone derived from the new-tab background; it is not the four-colour brand logo |
+| New tab search pill | `#FFFFFF` with dark text `#3C4043` | Chrome renders the search box light on this dark page |
+| Plus / mic glyphs in the search pill | `#5F6368` | Chrome's dark-surface tone; the Lens glyph keeps its brand colours |
+| Shortcut tiles | `#FFFFFF` (YouTube, Chrome Web Store), `#3C4043` (add shortcut) | The round tiles are rendered by the page, not the theme |
+| `Gmail` / `Images` row | `Images` only, `#9AA0A6` | Matches the real new-tab header of the reference install |
+| Shortcut labels | `#9AA0A6` | Chrome's standard dark-surface tone |
+| Omnibox outline | `#9AA0A6` | Chrome's own outline on the dark toolbar |
 | `Customize Chrome` pill | `#202124` / `#A8C7FA` | Rendered by the page, not the theme |
-| Focused omnibox outline | `#8CA0CC` | Chrome's own outline on the dark toolbar |
 | Window glyphs | `#D9D9DE` | Light glyphs on the indigo frame |
 
 ## Logo
 
-`logo/logo128.png` is exported at 128px from the chosen concept in `store-assets/icon-candidates/` (`logo-06-starry.png`): a star-flecked night sky inside a rounded square, with a glowing eclipse disc at the centre. A Chrome theme ships exactly one icon size, so `manifest.json` references only the 128px file.
+`logo/logo.png` is the single 128px icon a Chrome theme ships, exported from the chosen concept in `store-assets/icon-candidates/` (`logo-06-starry.png`): a star-flecked night sky inside a rounded square, with a glowing eclipse disc at the centre. It lives in its own `logo/` folder so it is easy to find when uploading, and `manifest.json` references only that one file.
 
 ## Regenerating
 
