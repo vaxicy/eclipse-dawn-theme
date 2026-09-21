@@ -20,6 +20,14 @@ OUT = ROOT / 'store-assets' / 'references'
 OUT.mkdir(parents=True, exist_ok=True)
 C = json.loads((ROOT / 'manifest.json').read_text('utf-8-sig'))['theme']['colors']
 C['halo'] = [214, 226, 248]   # brand accent: corona highlight used by the icon/store art
+def darken(rgb, k):
+    return [int(round(c * k)) for c in rgb]
+
+
+# Page backdrop for the swatch/info sheets. It must NOT equal any colour that is
+# shown as a swatch, or that card merges into the page. ntp_background IS a swatch,
+# so derive a clearly darker tone from it instead of reusing the token.
+C['backdrop'] = darken(C['ntp_background'], 0.35)
 
 
 def color(k):
@@ -55,6 +63,7 @@ VARS = f""":root{{
   --link:{color('ntp_link')};
   --ntptext:{color('ntp_text')};
   --halo:{color('halo')};
+  --backdrop:{color('backdrop')};
   --logoc:{LOGO_TINT};
   --ui:{SEARCH_TEXT};
   --shortcut:{SHORTCUT_TILE};
@@ -65,7 +74,7 @@ VARS = f""":root{{
 
 CSS = VARS + """
 *{box-sizing:border-box}
-body{margin:0;overflow:hidden;font-family:Arial,'Helvetica Neue',sans-serif;background:var(--ntp);color:var(--ntptext)}
+body{margin:0;overflow:hidden;font-family:Arial,'Helvetica Neue',sans-serif;background:var(--backdrop);color:var(--ntptext)}
 .window{width:1080px;height:675px;background:var(--ntp);position:relative;overflow:hidden;display:flex;flex-direction:column}
 .row{display:flex;align-items:center;flex:0 0 auto}
 svg{display:block}
@@ -121,16 +130,16 @@ svg{display:block}
 .tile:after{content:'';position:absolute;left:0;right:0;bottom:0;height:14px;background:var(--link)}
 
 /* ---- promo: 1400x560 marquee ---- */
-.marquee{width:1400px;height:560px;background:var(--ntp);position:relative;overflow:hidden;text-align:center;
+.marquee{width:1400px;height:560px;background:var(--backdrop);position:relative;overflow:hidden;text-align:center;
          border-top:8px solid var(--link)}
 .marquee h1{font-family:Georgia,serif;font-weight:normal;font-size:47px;margin:26px 0 0;color:var(--ntptext)}
 .marquee p{font-size:17px;margin:9px 0 0;color:var(--ui)}
 .marquee .frame{position:absolute;top:139px;left:300px;width:800px;height:370px;overflow:hidden;border:2px solid var(--frame);
-                border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.45)}
+                border-radius:16px;box-shadow:0 0 0 1px rgba(236,236,238,.06),0 16px 44px rgba(0,0,0,.7)}
 .marquee .frame .window{transform:scale(.740741);transform-origin:top left}
 
 /* ---- screenshot 2: palette card ---- */
-.intro{width:1280px;height:800px;background:var(--ntp);padding:66px 74px}
+.intro{width:1280px;height:800px;background:var(--backdrop);padding:66px 74px}
 .intro .kicker{font-size:12px;letter-spacing:4px;color:var(--ui)}
 .intro h1{font-family:Georgia,serif;font-weight:normal;font-size:54px;margin:16px 0 0;color:var(--ntptext)}
 .intro .lead{font-size:21px;margin:14px 0 0;color:#C9C9D6}
@@ -304,8 +313,10 @@ PALETTE = [
     ('Eclipse Navy', 'ntp_background', 'New tab background', 'ntp_text'),
     ('Periwinkle', 'ntp_link', 'Accent, links & active tab mark', 'ntp_background'),
 ]
+assert all(tuple(C['backdrop']) != tuple(C[k]) for _n, k, _r, _f in PALETTE), \
+    'page backdrop must not equal a swatch colour'
 cards = ''.join(
-    f'<div class="card" style="background:{color(k)};color:{color(fg)};border:1px solid rgba(236,236,238,.14)">'
+    f'<div class="card" style="background:{color(k)};color:{color(fg)};border:1px solid rgba(236,236,238,.18)">'
     f'<strong>{name}</strong><span>{color(k)} · {role}</span></div>' for name, k, role, fg in PALETTE)
 intro = ('<div class="intro"><div class="kicker">A QUIET, DARK PALETTE</div><h1>Eclipse Dawn Theme</h1>'
          '<p class="lead">Deep indigo, eclipse navy and one calm periwinkle accent.</p><div class="cards">' + cards + '</div>'

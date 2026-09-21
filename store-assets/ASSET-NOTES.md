@@ -27,6 +27,8 @@ Elements Chrome paints itself are literals, because this is a dark palette and C
 | `Customize Chrome` pill | `#202124` / `#A8C7FA` | Rendered by the page, not the theme |
 | Window glyphs | `#D9D9DE` | Light glyphs on the indigo frame |
 
+The page backdrop behind `screenshot-2` and the marquee is **`ntp_background` darkened to 35% (`#09090C`)**, not `ntp_background` itself. The dark tone is derived from the theme (so it still feels native) but sits clearly below every swatch — otherwise the `Eclipse Navy` card and the window's own new-tab area would merge into the page. The composer asserts the backdrop never equals a swatch colour.
+
 ## Logo
 
 `logo/logo.png` is the single 128px icon a Chrome theme ships, exported from the chosen concept in `store-assets/icon-candidates/` (`logo-06-starry.png`): a star-flecked night sky inside a rounded square, with a glowing eclipse disc at the centre. It lives in its own `logo/` folder so it is easy to find when uploading, and `manifest.json` references only that one file.
